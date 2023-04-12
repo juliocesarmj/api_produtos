@@ -1,5 +1,9 @@
 package br.com.cotiinformatica.dtos.commands;
 
-public class ProdutoDeleteCommand {
+import lombok.Data;
 
+@Data
+public class ProdutoDeleteCommand {
+	private Integer id;
 }
+
