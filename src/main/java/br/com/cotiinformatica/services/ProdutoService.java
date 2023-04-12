@@ -20,16 +20,17 @@ public class ProdutoService {
 	ProdutoRepository produtoRepository;
 	ProdutoCache produtosCache;
 	CategoriaRepository categoriaRepository;
+	ModelMapper modelMapper;
 
 	public ProdutoService(ProdutoRepository produtoRepository, ProdutoCache produtosCache,
-			CategoriaRepository categoriaRepository) {
+			CategoriaRepository categoriaRepository, ModelMapper modelMapper) {
 		this.produtoRepository = produtoRepository;
 		this.produtosCache = produtosCache;
 		this.categoriaRepository = categoriaRepository;
+		this.modelMapper = modelMapper;
 	}
 
 	public ProdutosDto create(ProdutoCreateCommand command) {
-		ModelMapper modelMapper = new ModelMapper();
 		Produto produto = modelMapper.map(command, Produto.class);
 		produto.setCategoria(categoriaRepository.findById(command.getIdCategoria()).get());
 		produtoRepository.save(produto);
@@ -39,7 +40,6 @@ public class ProdutoService {
 	}
 
 	public ProdutosDto update(ProdutoUpdateCommand command) {
-		ModelMapper modelMapper = new ModelMapper();
 		Produto produto = produtoRepository.findById(command.getId()).get();
 		produto.setNome(command.getNome());
 		produto.setPreco(command.getPreco());
@@ -52,7 +52,6 @@ public class ProdutoService {
 	}
 
 	public ProdutosDto delete(ProdutoDeleteCommand command) {
-		ModelMapper modelMapper = new ModelMapper();
 		Produto produto = produtoRepository.findById(command.getId()).get();
 		produtoRepository.delete(produto);
 		ProdutosDto dto = modelMapper.map(produto, ProdutosDto.class);
